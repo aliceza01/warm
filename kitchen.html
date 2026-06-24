@@ -1,0 +1,31 @@
+<h2>ห้องครัว</h2>
+<div id="orders"></div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getFirestore, collection, onSnapshot, updateDoc, doc } 
+from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+const app = initializeApp({
+  apiKey: "ใส่ของคุณ",
+  projectId: "ใส่ของคุณ",
+  appId: "ใส่ของคุณ"
+});
+const db = getFirestore(app);
+const div = document.getElementById("orders");
+onSnapshot(collection(db,"orders"), (snap)=>{
+  div.innerHTML = "";
+  snap.forEach((d)=>{
+    let o = d.data();
+    div.innerHTML += `
+      <p>
+        โต๊ะ ${o.table} - ${o.food} - ${o.status}
+        <button onclick="done('${d.id}')">เสร็จแล้ว</button>
+      </p>
+    `;
+  });
+});
+window.done = async function(id){
+  await updateDoc(doc(db,"orders",id),{
+    status:"เสร็จแล้ว"
+  });
+}
+</script>

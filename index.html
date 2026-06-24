@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ร้านอาหาร</title>
+</head>
+<body>
+<h2>เมนูอาหาร</h2>
+<button onclick="order('ข้าวผัด')">ข้าวผัด 50</button>
+<button onclick="order('กะเพรา')">กะเพรา 60</button>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+  import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+  const firebaseConfig = {
+    apiKey: "ใส่ของคุณ",
+    projectId: "ใส่ของคุณ",
+    appId: "ใส่ของคุณ"
+  };
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.order = async function(food){
+    const table = new URLSearchParams(window.location.search).get("table");
+    await addDoc(collection(db, "orders"), {
+      food: food,
+      table: table,
+      status: "รอทำ",
+      time: Date.now()
+    });
+    alert("สั่งแล้ว!");
+  }
+</script>
+
+</body>
+</html>
