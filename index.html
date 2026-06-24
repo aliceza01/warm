@@ -27,7 +27,14 @@
     });
     alert("สั่งแล้ว!");
   }
-</script>
+  const table = new URLSearchParams(window.location.search).get("table");
+  addDoc(collection(db, "orders"), {
+  table: table,
+  food: food,
+  status: "รอทำ",
+  time: Date.now()
+});
 
+</script>
 </body>
 </html>
